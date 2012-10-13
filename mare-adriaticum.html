@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Leaflet Quick Start Guide Example</title>
+  <title>Mapping Alpha Shape of the Mare Adriaticum</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
@@ -10,46 +10,43 @@
   <![endif]-->
 </head>
 <body>
-  <div id="map" style="width: 600px; height: 400px"></div>
+  <div id="map" style="height:800px;width:100%;"></div>
   <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
   <script>
 
-		var map = L.map('map').setView([51.505, -0.09], 13);
+    var map = L.map('map').setView([42.4698, 16.6461], 6);
+    var terrain = L.tileLayer(
+      'http://api.tiles.mapbox.com/v3/sgillies.map-ac5eaoks/{z}/{x}/{y}.png', {
+        attribution: "ISAW, 2012"
+        });
+    terrain.addTo(map);
 
-		L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
-			maxZoom: 18,
-			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
-		}).addTo(map);
+    /* Not added by default, only through user control action */
+    var streets = L.tileLayer(
+      'http://api.tiles.mapbox.com/v3/sgillies.map-pmfv2yqx/{z}/{x}/{y}.png', {
+        attribution: "ISAW, 2012"
+        });
 
+    var imperium = L.tileLayer(
+      'http://pelagios.dme.ait.ac.at/tilesets/imperium//{z}/{x}/{y}.png', {
+        attribution: 'Tiles: <a href="http://pelagios-project.blogspot.com/2012/09/a-digital-map-of-roman-empire.html">Pelagios</a>, 2012; Data: NASA, OSM, Pleiades, DARMC',
+        maxZoom: 11
+        });
 
-		L.marker([51.5, -0.09]).addTo(map)
-			.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+  L.control.layers({
+    "Terrain (default)": terrain,
+    "Streets": streets,
+    "Imperium": imperium,
+    }).addTo(map);
 
-		L.circle([51.508, -0.11], 500, {
-			color: 'red',
-			fillColor: '#f03',
-			fillOpacity: 0.5
-		}).addTo(map).bindPopup("I am a circle.");
+  var hullLayer = {"type": "FeatureCollection", "features": [{"geometry": {"type": "Polygon", "coordinates": [[[16.1999353, 41.8260966], [15.4848265, 42.117902100000002], [13.841124000000001, 44.869567000000004], [15.223777999999999, 44.115501000000002], [16.483426000000001, 43.539560999999999], [19.449833999999999, 41.316249999999997], [17.938956000000001, 40.636189999999999], [16.1999353, 41.8260966]]]}, "title": "Hull (Alpha=2.0)", "type": "Feature", "id": "1", "description": "See http://sgillies.net/blog/1154/ancient-shape-of-alpha"}]};
 
-		L.polygon([
-			[51.509, -0.08],
-			[51.503, -0.06],
-			[51.51, -0.047]
-		]).addTo(map).bindPopup("I am a polygon.");
+  var pointsLayer = {"type": "FeatureCollection", "features": [{"geometry": {"type": "Point", "coordinates": [13.841124000000001, 44.869567000000004]}, "type": "Feature", "id": "1", "title": "Point 1"}, {"geometry": {"type": "Point", "coordinates": [19.449833999999999, 41.316249999999997]}, "type": "Feature", "id": "2", "title": "Point 2"}, {"geometry": {"type": "Point", "coordinates": [15.223777999999999, 44.115501000000002]}, "type": "Feature", "id": "3", "title": "Point 3"}, {"geometry": {"type": "Point", "coordinates": [16.1999353, 41.8260966]}, "type": "Feature", "id": "4", "title": "Point 4"}, {"geometry": {"type": "Point", "coordinates": [17.938956000000001, 40.636189999999999]}, "type": "Feature", "id": "5", "title": "Point 5"}, {"geometry": {"type": "Point", "coordinates": [16.483426000000001, 43.539560999999999]}, "type": "Feature", "id": "6", "title": "Point 6"}, {"geometry": {"type": "Point", "coordinates": [19.449833999999999, 41.316249999999997]}, "type": "Feature", "id": "7", "title": "Point 7"}, {"geometry": {"type": "Point", "coordinates": [15.223777999999999, 44.115501000000002]}, "type": "Feature", "id": "8", "title": "Point 8"}, {"geometry": {"type": "Point", "coordinates": [16.1999353, 41.8260966]}, "type": "Feature", "id": "9", "title": "Point 9"}, {"geometry": {"type": "Point", "coordinates": [15.4848265, 42.117902100000002]}, "type": "Feature", "id": "10", "title": "Point 10"}, {"geometry": {"type": "Point", "coordinates": [15.746207699999999, 42.225572100000001]}, "type": "Feature", "id": "11", "title": "Point 11"}]};
 
+  L.geoJson(hullLayer).addTo(map);
+  L.geoJson(pointsLayer).addTo(map);
 
-		var popup = L.popup();
-
-		function onMapClick(e) {
-			popup
-				.setLatLng(e.latlng)
-				.setContent("You clicked the map at " + e.latlng.toString())
-				.openOn(map);
-		}
-
-		map.on('click', onMapClick);
-
-	</script>
+  </script>
 </body>
 </html>
 
