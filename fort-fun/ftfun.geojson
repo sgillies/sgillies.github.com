@@ -1,0 +1,21 @@
+{
+  "type": "FeatureCollection", 
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          -105.0757134, 
+          40.5863266
+        ], 
+        "type": "Point"
+      }, 
+      "id": "http://www.openstreetmap.org/browse/node/1691447333", 
+      "type": "Feature", 
+      "properties": {
+        "name": "Equinox Brewing", 
+        "website": "http://www.equinoxbrewing.com/", 
+        "address": "133 Remington St, Fort Collins, CO"
+      }
+    }
+  ]
+}
