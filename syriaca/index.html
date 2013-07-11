@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Syriac Places</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet"
+    href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
+  <!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
+  <![endif]-->
+
+  <!-- Links to GeoJSON data we'll use in the map. -->
+  <link rel="points" href="syriaca.json"/>
+
+</head>
+<body>
+  <div id="map" style="height:800px;width:100%;"></div>
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+  <script>
+
+    var map = L.map('map').setView([42.4698, 16.6461], 7);
+    var terrain = L.tileLayer(
+      'http://api.tiles.mapbox.com/v3/sgillies.map-ac5eaoks/{z}/{x}/{y}.png', {
+        attribution: "ISAW, 2012"
+        });
+    terrain.addTo(map);
+
+    /* Not added by default, only through user control action */
+    var streets = L.tileLayer(
+      'http://api.tiles.mapbox.com/v3/sgillies.map-pmfv2yqx/{z}/{x}/{y}.png', {
+        attribution: "ISAW, 2012"
+        });
+
+    var imperium = L.tileLayer(
+      'http://pelagios.dme.ait.ac.at/tilesets/imperium//{z}/{x}/{y}.png', {
+        attribution: 'Tiles: <a href="http://pelagios-project.blogspot.com/2012/09/a-digital-map-of-roman-empire.html">Pelagios</a>, 2012; Data: NASA, OSM, Pleiades, DARMC',
+        maxZoom: 11
+        });
+
+  L.control.layers({
+    "Terrain (default)": terrain,
+    "Streets": streets,
+    "Imperium": imperium,
+    }).addTo(map);
+
+  /* Load points GeoJSON and add to map */
+  $.getJSON($('link[rel="points"]').attr("href"), function(data) {
+    L.geoJson(data).addTo(map);
+  });
+
+  </script>
+</body>
+</html>
+
