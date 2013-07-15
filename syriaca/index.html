@@ -24,12 +24,10 @@
   <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
   <script src="./markercluster/leaflet.markercluster.js"></script>
   <script>
-    var map = L.map('map').setView([35.756719085294115, 39.549680129411755], 5);
     var terrain = L.tileLayer(
       'http://api.tiles.mapbox.com/v3/sgillies.map-ac5eaoks/{z}/{x}/{y}.png', {
         attribution: "ISAW, 2012"
         });
-    terrain.addTo(map);
 
     /* Not added by default, only through user control action */
     var streets = L.tileLayer(
@@ -43,14 +41,6 @@
         maxZoom: 11
         });
 
-  L.control.layers({
-    "Terrain (default)": terrain,
-    "Streets": streets,
-    "Imperium": imperium,
-    }).addTo(map);
-
-  var markers = L.markerClusterGroup();
-
   /* Load points GeoJSON and add to map */
   $.getJSON($('link[rel="points"]').attr("href"), function(data) {
     var geojson = L.geoJson(data, {
@@ -58,7 +48,14 @@
         layer.bindPopup(feature.properties.title);
       }
     });
-    map.fitBounds(geojson.getBounds());
+    var map = L.map('map').fitBounds(geojson.getBounds());
+    terrain.addTo(map);
+    L.control.layers({
+      "Terrain (default)": terrain,
+      "Streets": streets,
+      "Imperium": imperium,
+      }).addTo(map);
+    var markers = L.markerClusterGroup();
     markers.addLayer(geojson);
     map.addLayer(markers);
   });
