@@ -5,10 +5,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet"
-    href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
+    href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css" />
   <!--[if lte IE 8]>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.ie.css" />
   <![endif]-->
+  <link rel="stylesheet" href="./markercluster/MarkerCluster.css" />
+  <link rel="stylesheet" href="./markercluster/MarkerCluster.Default.css" />
+  <!--[if lte IE 8]><link rel="stylesheet" href="markercluster/MarkerCluster.Default.ie.css" /><![endif]-->
+
 
   <!-- Links to GeoJSON data we'll use in the map. -->
   <link rel="points" href="syriaca.json"/>
@@ -17,9 +21,9 @@
 <body>
   <div id="map" style="height:800px;width:100%;"></div>
   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-  <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+  <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
+  <script src="./markercluster/leaflet.markercluster.js"></script>
   <script>
-
     var map = L.map('map').setView([35.756719085294115, 39.549680129411755], 6);
     var terrain = L.tileLayer(
       'http://api.tiles.mapbox.com/v3/sgillies.map-ac5eaoks/{z}/{x}/{y}.png', {
@@ -45,9 +49,13 @@
     "Imperium": imperium,
     }).addTo(map);
 
+  var markers = L.markerClusterGroup();
+
   /* Load points GeoJSON and add to map */
   $.getJSON($('link[rel="points"]').attr("href"), function(data) {
-    L.geoJson(data).addTo(map);
+    var geojson = L.geoJson(data);
+    markers.addLayer(geojson);
+    map.addLayer(markers);
   });
 
   </script>
