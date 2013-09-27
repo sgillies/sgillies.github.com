@@ -15,7 +15,7 @@
 
 
   <!-- Links to GeoJSON data we'll use in the map. -->
-  <link rel="location" href="syriaca.json" type="application/json"/>
+  <link rel="location" href="http://sgillies.net/syriaca.json" type="application/json"/>
 
 
 </head>
@@ -43,7 +43,7 @@
         });
 
   /* Load points GeoJSON and add to map */
-  $.getJSON($('link[rel="points"]').attr("href"), function(data) {
+  $.getJSON($('link[rel="location"]').attr("href"), function(data) {
     var geojson = L.geoJson(data, {
       onEachFeature: function (feature, layer) {
         layer.bindPopup(feature.properties.title);
